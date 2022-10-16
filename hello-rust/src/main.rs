@@ -15,10 +15,10 @@ fn main() {
     println!("printing value: {x}");
 
     let y;
-    if x == 235 {
+    if x == 234 {
         y = "banana";
     } else {
-        y = "nonana";
+        y = "nonana"
     };
     
     println!("what?: {y}");
@@ -27,4 +27,21 @@ fn main() {
     println!("mutable: {z}");
     z = 234;
     println!("mutable 2: {z}");
+
+    let rtup = (10, "elmao", 3.5);
+    println!(
+        "can you print tups?: {} {} {}: nop you can't directly",
+        rtup.0,
+        rtup.1,
+        rtup.2, // yay you can have these ending commas like go!
+    );
+
+    let mut arr = [12, 234, 23, 2, 31];
+    print_array(&mut arr)
+}
+
+fn print_array(arr: &mut [i32]) {
+    for el in arr {
+        println!("{el}")
+    }
 }
