@@ -42,20 +42,18 @@ fn main() {
         let mut vao = 0;
         gl::GenVertexArrays(1, &mut vao);
         assert_ne!(vao, 0);
+        gl::BindVertexArray(vao);
 
         let mut vbo = 0;
         gl::GenBuffers(1, &mut vbo);
         assert_ne!(vbo, 0);
-
         gl::BindBuffer(gl::ARRAY_BUFFER, vbo);
-
         gl::BufferData(
             gl::ARRAY_BUFFER,
             size_of_val(&triangle) as isize,
             triangle.as_ptr().cast(),
             gl::STATIC_DRAW,
         );
-
         gl::VertexAttribPointer(
             0,
             3,
@@ -64,6 +62,7 @@ fn main() {
             size_of::<Vertex>().try_into().unwrap(),
             0 as *const _,
         );
+        gl::EnableVertexAttribArray(0);
 
         // vertex shader
         let vertex_shader = gl::CreateShader(gl::VERTEX_SHADER);
@@ -75,7 +74,7 @@ fn main() {
             &(VERT_SHADER.as_bytes().as_ptr().cast()),
             &(VERT_SHADER.len().try_into().unwrap()),
         );
-
+        gl::CompileShader(vertex_shader);
         let mut success = 0;
         gl::GetShaderiv(vertex_shader, gl::COMPILE_STATUS, &mut success);
         if success == 0 {
@@ -95,6 +94,7 @@ fn main() {
             &(FRAG_SHADER.as_bytes().as_ptr().cast()),
             &(FRAG_SHADER.len().try_into().unwrap()),
         );
+        gl::CompileShader(fragment_shader);
         gl::GetShaderiv(fragment_shader, gl::COMPILE_STATUS, &mut success);
         if success == 0 {
             let mut v: Vec<u8> = Vec::with_capacity(1024);
